@@ -6,4 +6,4 @@ pandas==2.2.2
 numpy==2.00
 openpyxl
 xlsxwriter
-
+python-multipart
