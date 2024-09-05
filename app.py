@@ -8,7 +8,7 @@ import aiofiles
 import io
 from io import BytesIO
 from bson import json_util
-from pymongo import UpdateOne
+from pymongo import MongoClient, UpdateOne
 import uuid  # Import UUID
 
 app = FastAPI()
@@ -138,6 +138,9 @@ async def export_to_excel():
 
 @app.post("/filter-records/")
 def filter_records(filters: Dict[str, Any] = Body(...)):
+    client = MongoClient("mongodb+srv://aryank013:prajit@kv-consult.vsqin.mongodb.net/?retryWrites=true&w=majority&appName=kv-consult")
+    db = client["kv"]
+    collection = db["master"]   
     # Construct the MongoDB query from the provided filters
     query = {}
 
@@ -145,7 +148,7 @@ def filter_records(filters: Dict[str, Any] = Body(...)):
         query[key] = value
 
     # Execute the query
-    records = collection.find(query).to_list(length=100)  # Limit to 100 records for example
+    records = list(collection.find(query))  # Limit to 100 records for example
 
     if not records:
         raise HTTPException(status_code=404, detail="No records found matching the filters.")
