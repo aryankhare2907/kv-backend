@@ -137,7 +137,7 @@ async def export_to_excel():
 
 
 @app.post("/filter-records/")
-async def filter_records(filters: Dict[str, Any] = Body(...)):
+def filter_records(filters: Dict[str, Any] = Body(...)):
     # Construct the MongoDB query from the provided filters
     query = {}
 
@@ -145,7 +145,7 @@ async def filter_records(filters: Dict[str, Any] = Body(...)):
         query[key] = value
 
     # Execute the query
-    records = await collection.find(query).to_list(length=100)  # Limit to 100 records for example
+    records = collection.find(query).to_list(length=100)  # Limit to 100 records for example
 
     if not records:
         raise HTTPException(status_code=404, detail="No records found matching the filters.")
