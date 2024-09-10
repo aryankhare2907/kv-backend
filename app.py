@@ -10,8 +10,16 @@ from io import BytesIO
 from bson import json_util
 from pymongo import MongoClient, UpdateOne
 import uuid  # Import UUID
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # MongoDB connection
 client = AsyncIOMotorClient("mongodb+srv://aryank013:prajit@kv-consult.vsqin.mongodb.net/?retryWrites=true&w=majority&appName=kv-consult")
